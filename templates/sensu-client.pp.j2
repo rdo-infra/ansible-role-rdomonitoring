@@ -1,5 +1,14 @@
+# OpenStack VMs have a butchered .openstacklocal fqdn
+# Rely on ec2_hostname fact if it's available or fall back to fqdn
+if $::ec2_hostname {
+  $client_name = $::ec2_hostname
+} else {
+  $client_name = $::fqdn
+}
+
 class { 'sensu':
-  server => false,
-  api => false,
+  client_name   => $client_name
+  server        => false,
+  api           => false,
   subscriptions => ['default']
 }
