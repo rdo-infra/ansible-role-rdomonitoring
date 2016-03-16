@@ -158,24 +158,29 @@ sensu::checks:
     command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7/current/versions.csv"
     subscribers: 'master'
     custom:
+      broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-mitaka-consistent:
     command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7/consistent/versions.csv"
     subscribers: 'master'
     custom:
+      broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-liberty-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7-liberty/current-passed-ci/versions.csv"
     subscribers: 'master'
     custom:
+      broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-liberty-current:
     command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7-liberty/current/versions.csv"
     subscribers: 'master'
     custom:
+      broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-liberty-consistent:
     command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7-liberty/consistent/versions.csv"
     subscribers: 'master'
     custom:
+      broadcast: '#rdo-dev'
       retry_occurrences: 90
