@@ -29,8 +29,8 @@ monitoring_uchiwa_users: |
       password: 'rdo'
       readonly: 'true'
 
-monitoring_delorean_url: "http://trunk.rdoproject.org/centos7/current/delorean.repo"
-monitoring_delorean_deps_url: "http://trunk.rdoproject.org/centos7/delorean-deps.repo"
+monitoring_delorean_url: "http://trunk.rdoproject.org/centos7-mitaka/current-passed-ci/delorean.repo"
+monitoring_delorean_deps_url: "http://trunk.rdoproject.org/centos7-mitaka/delorean-deps.repo"
 
 monitoring_extra_repositories:
   - epel-release
