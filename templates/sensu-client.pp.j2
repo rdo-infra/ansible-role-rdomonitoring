@@ -7,7 +7,7 @@ if $::ec2_hostname {
 }
 
 class { 'sensu':
-  client_name   => $client_name
+  client_name   => $client_name,
   server        => false,
   api           => false,
   subscriptions => ['default']
