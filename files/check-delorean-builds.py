@@ -3,18 +3,15 @@ import csv
 import sys
 import requests
 from cStringIO import StringIO
-from six.moves.urllib import parse as urlparse
 
 # Delorean build statuses
 BUILD_STATUSES = ['SUCCESS', 'FAILED']
 
 # URL to Delorean build statuses in csv format
-DEFAULT_URL = 'http://trunk.rdoproject.org/centos7/current/versions.csv'
-
-# URL to upstream project git commit
-OPENSTACK_URL = "http://git.openstack.org/cgit/openstack/{0}/commit/?id={1}"
-GITHUB_URL = "https://github.com/{0}/commit/{1}"
-
+DEFAULT_RELEASE = "centos7"
+DEFAULT_TAG = "current"
+VERSIONS = "http://trunk.rdoproject.org/{0}/{1}/versions.csv"
+REPORT = "http://trunk.rdoproject.org/{0}/{1}/report.html"
 
 # Nagios-compatible exit codes
 EXIT_CODES = {
@@ -46,64 +43,51 @@ def return_exit(status, message=None):
     sys.exit(EXIT_CODES[status])
 
 
-def retrieve_report(url=DEFAULT_URL):
+def retrieve_versions(url):
     """
-    Helper to download the report and return a dictionary of it's values
+    Helper to download the versions report and return a dictionary
     :param url: URL to download the csv file from
     :return: csv DictReader object
     """
     # Get the csv content into a dummy file in-memory
-    report = requests.get(url).text
-    report_file = StringIO(report)
-    report_file.seek(0)
+    versions = requests.get(url).text
+    versions_file = StringIO(versions)
+    versions_file.seek(0)
 
     # Return a parsed csv object
-    csv_report = csv.DictReader(report_file)
-    return csv_report
-
-
-def get_commit_url(source_repo, source_sha, project):
-    """
-    Crafts a commit URL based on provided source_repo, source_sha and project
-    :param source_repo: the source git repository
-    :param source_sha: the commit built
-    :param project: the project
-    :return: full commit url as a string
-    """
-    domain = urlparse.urlsplit(source_repo).netloc
-    if 'openstack' in domain:
-        url = OPENSTACK_URL.format(project, source_sha)
-    elif 'github' in domain:
-        url = GITHUB_URL.format(project, source_sha)
-    else:
-        message = "Unable to parse a project URL: {0}".format(source_repo)
-        return_exit('UNKNOWN', message)
-
-    return url
+    csv_versions = csv.DictReader(versions_file)
+    return csv_versions
 
 
 if __name__ == '__main__':
     try:
-        url = sys.argv[1]
+        release = sys.argv[1]
+        tag = sys.argv[2]
     except IndexError:
-        url = DEFAULT_URL
-    report = retrieve_report(url=url)
+        # Default to master current
+        release = DEFAULT_RELEASE
+        tag = DEFAULT_TAG
+    url = VERSIONS.format(release, tag)
 
-    message = []
+    versions = retrieve_versions(url)
+    report = REPORT.format(release, tag)
+
+    projects = []
     problem = False
-    for line in report:
+    for line in versions:
         source_repo = line['Source Repo']
         source_sha = line['Source Sha']
         project = source_repo.split('/')[-1]
-        commit = get_commit_url(source_repo, source_sha, project)
         status = line['Status']
 
         if "SUCCESS" not in status:
-            error = "Build failure for {0} with {1}".format(project, commit)
-            message.append(error)
+            projects.append(project)
             problem = True
 
     if problem:
-        return_exit('CRITICAL', "\n".join(message))
+        error_message = "Build failure on {0}/{1}:".format(release, tag)
+        projects = ', '.join(projects)
+        message = "{0} {1}: {2}".format(error_message, projects, report)
+        return_exit('CRITICAL', message)
     else:
-        return_exit('OK', 'No build failures detected')
+        return_exit('OK', 'No build failures detected: {0}'.format(report))

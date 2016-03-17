@@ -150,36 +150,36 @@ sensu::checks:
     command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^tripleo-quickstart'"
     subscribers: 'master'
   check-delorean-mitaka-current-passed-ci:
-    command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7/current-passed-ci/versions.csv"
+    command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current-passed-ci"
     subscribers: 'master'
     custom:
       retry_occurrences: 90
   check-delorean-mitaka-current:
-    command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7/current/versions.csv"
+    command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-mitaka-consistent:
-    command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7/consistent/versions.csv"
+    command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka consistent"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-liberty-current-passed-ci:
-    command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7-liberty/current-passed-ci/versions.csv"
+    command: "/usr/local/bin/check-delorean-builds.py centos7-liberty current-passed-ci"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-liberty-current:
-    command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7-liberty/current/versions.csv"
+    command: "/usr/local/bin/check-delorean-builds.py centos7-liberty current"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-liberty-consistent:
-    command: "/usr/local/bin/check-delorean-builds.py http://trunk.rdoproject.org/centos7-liberty/consistent/versions.csv"
+    command: "/usr/local/bin/check-delorean-builds.py centos7-liberty consistent"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
