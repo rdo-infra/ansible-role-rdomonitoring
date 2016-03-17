@@ -8,9 +8,9 @@ server {
     location / {
         # Restrict bot access to sensu clients
         allow 127.0.0.1;
-        allow {{ ansible_host }}; # master
+        allow {{ public_address }}; # master
 {% for host in groups['client'] %}
-        allow {{ hostvars[host]['ansible_host'] }}; # client
+        allow {{ hostvars[host]['public_address'] }}; # client
 {% endfor %}
         deny all;
 
