@@ -11,7 +11,7 @@ BUILD_STATUSES = ['SUCCESS', 'FAILED']
 DEFAULT_RELEASE = "centos7"
 DEFAULT_TAG = "current"
 VERSIONS = "http://trunk.rdoproject.org/{0}/{1}/versions.csv"
-REPORT = "http://trunk.rdoproject.org/{0}/{1}/report.html"
+REPORT = "http://trunk.rdoproject.org/{0}/report.html"
 
 # Nagios-compatible exit codes
 EXIT_CODES = {
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     url = VERSIONS.format(release, tag)
 
     versions = retrieve_versions(url)
-    report = REPORT.format(release, tag)
+    report = REPORT.format(release)
 
     projects = []
     problem = False
