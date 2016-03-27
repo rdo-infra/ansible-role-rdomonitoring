@@ -149,6 +149,23 @@ sensu::checks:
   check-quickstart-jobs:
     command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^tripleo-quickstart'"
     subscribers: 'master'
+  check-delorean-newton-current-passed-ci:
+    command: "/usr/local/bin/check-delorean-builds.py centos7-master current-passed-ci"
+    subscribers: 'master'
+    custom:
+      retry_occurrences: 90
+  check-delorean-newton-current:
+    command: "/usr/local/bin/check-delorean-builds.py centos7-master current"
+    subscribers: 'master'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: 90
+  check-delorean-newton-consistent:
+    command: "/usr/local/bin/check-delorean-builds.py centos7-master consistent"
+    subscribers: 'master'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: 90
   check-delorean-mitaka-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current-passed-ci"
     subscribers: 'master'
