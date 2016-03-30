@@ -80,6 +80,7 @@ monitoring_sensu_plugins:
 
 monitoring_custom_sensu_plugins:
   - check-delorean-builds.py
+  - check-http-file-age.sh
 
 monitoring_custom_sensu_handlers:
   - errbot.py

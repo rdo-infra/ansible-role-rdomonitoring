@@ -153,6 +153,7 @@ sensu::checks:
     command: "/usr/local/bin/check-delorean-builds.py centos7-master current-passed-ci"
     subscribers: 'master'
     custom:
+      broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-newton-current:
     command: "/usr/local/bin/check-delorean-builds.py centos7-master current"
@@ -170,6 +171,7 @@ sensu::checks:
     command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current-passed-ci"
     subscribers: 'master'
     custom:
+      broadcast: '#rdo-dev'
       retry_occurrences: 90
   check-delorean-mitaka-current:
     command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current"
@@ -201,3 +203,9 @@ sensu::checks:
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: 90
+  check-delorean-update-primary:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master/current/ 21600"
+    subscribers: 'master'
+  check-delorean-update-backup:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master/current/ 21600"
+    subscribers: 'master'
