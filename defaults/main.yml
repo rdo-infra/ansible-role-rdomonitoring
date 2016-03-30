@@ -32,9 +32,6 @@ monitoring_uchiwa_users: |
 monitoring_delorean_url: "http://trunk.rdoproject.org/centos7-mitaka/current-passed-ci/delorean.repo"
 monitoring_delorean_deps_url: "http://trunk.rdoproject.org/centos7-mitaka/delorean-deps.repo"
 
-monitoring_extra_repositories:
-  - epel-release
-
 monitoring_base_packages:
   - "@Development tools"
   - python-setuptools

@@ -35,6 +35,7 @@
   with_items: "{{ monitoring_extra_repositories }}"
   retries: "3"
   delay: "20"
+  when: monitoring_extra_repositories is defined
 
 - name: Ensure yum-plugin-priorities is used
   package:
