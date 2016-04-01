@@ -45,7 +45,8 @@ module Sensu::Extension
     def filter(event)
       # If this is not a new alert but a resolved notification, the filter does
       # not apply.
-      if event[:action] == "resolve"
+      case event[:action]
+      when :resolve
         return ALLOW_PROCESSING, "resolved notifications shouldn't be filtered"
       end
 
