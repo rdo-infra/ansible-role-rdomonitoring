@@ -43,13 +43,6 @@ module Sensu::Extension
     end
 
     def filter(event)
-      # If this is not a new alert but a resolved notification, the filter does
-      # not apply.
-      case event[:action]
-      when :resolve
-        return ALLOW_PROCESSING, "resolved notifications shouldn't be filtered"
-      end
-
       event_occurrences = event[:occurrences].to_i
       check_occurrences = event[:check][:occurrences].to_i
       retry_occurrences = event[:check][:retry_occurrences].to_i || check_occurrences
@@ -57,6 +50,12 @@ module Sensu::Extension
       # This might not be a "retry" but a first notification
       if event_occurrences == check_occurrences
         return ALLOW_PROCESSING, "event occurrences matches check occurrences"
+      end
+
+      # If we're beyond the treshold for a first notification and we get a
+      # resolution, let it through.
+      if event_occurrences >= check_occurrences and event[:action] == :resolve
+        return ALLOW_PROCESSING, "resolved notifications shouldn't be filtered"
       end
 
       # If we're here, we're "retrying", check if it matches retry_occurrences
