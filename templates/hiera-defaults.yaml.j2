@@ -111,19 +111,19 @@ sensu::checks:
   metric-interfaces:
     command: '/usr/local/bin/metrics-interface.rb'
     type: 'metric'
-    handlers: 'none'
+    handlers: ''
   metric-network:
     command: '/usr/local/bin/metrics-net.rb'
     type: 'metric'
-    handlers: 'none'
+    handlers: ''
   metric-network-throughput:
     command: '/usr/local/bin/metrics-netif.rb'
     type: 'metric'
-    handlers: 'none'
+    handlers: ''
   metric-cpu:
     command: '/usr/local/bin/metrics-cpu.rb'
     type: 'metric'
-    handlers: 'none'
+    handlers: ''
   # Master checks
   check-sensu-api:
     command: '/usr/local/bin/check-process.rb -p "sensu-api" -C 1'
