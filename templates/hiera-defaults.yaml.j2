@@ -83,6 +83,7 @@ sensu::handlers:
 sensu::check_defaults:
   occurrences: '3'
   interval: 60
+  ttl: 180
   standalone: false
   subscribers: 'default'
   handlers:
@@ -140,6 +141,7 @@ sensu::checks:
     command: '/usr/local/bin/check-whois-domain-expiration.rb -d rdoproject.org -c 60'
     subscribers: 'master'
     interval: '14400'
+    ttl: '43200'
   check-uchiwa:
     command: "/usr/local/bin/check-uchiwa-health.rb -h uchiwa.monitoring.rdoproject.org -u rdo -p rdo -P 80"
     subscribers: 'master'
