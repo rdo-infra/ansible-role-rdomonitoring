@@ -71,6 +71,8 @@ sensu::client_keepalive:
     - 'errbot'
   custom:
     broadcast: '#rdo-dev'
+  occurrences: '3'
+  retry_occurrences: '30'
 sensu::client_custom:
   datacenter: 'rdo-monitoring'
 sensu::handlers:
