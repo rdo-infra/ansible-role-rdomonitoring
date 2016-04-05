@@ -45,7 +45,10 @@ module Sensu::Extension
     def filter(event)
       event_occurrences = event[:occurrences].to_i
       check_occurrences = event[:check][:occurrences].to_i
-      retry_occurrences = event[:check][:retry_occurrences].to_i || check_occurrences
+      retry_occurrences = event[:check][:retry_occurrences].to_i
+      if retry_occurrences == 0
+        retry_occurrences = check_occurrences
+      end
 
       # This might not be a "retry" but a first notification
       if event_occurrences == check_occurrences
