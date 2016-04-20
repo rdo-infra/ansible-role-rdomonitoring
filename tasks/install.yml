@@ -31,9 +31,9 @@
     state: "directory"
 
 - name: Create server manifest
-  copy:
-    src: "sensu-server.pp"
-    dest: "/etc/puppet/manifests/sensu-server.pp"
+  template:
+    src: "templates/sensu-master.pp.j2"
+    dest: "/etc/puppet/manifests/sensu-master.pp"
   when: inventory_hostname in groups.master
 
 - name: Create client manifest
