@@ -1,5 +1,5 @@
 class { 'sensu':
-  client_name   => {{ inventory_hostname }},
+  client_name   => '{{ inventory_hostname }}',
   server        => false,
   api           => false,
   subscriptions => ['default']

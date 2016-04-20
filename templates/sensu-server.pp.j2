@@ -3,7 +3,7 @@ include ::rabbitmq
 include ::redis
 
 class { 'sensu':
-  client_name   => {{ inventory_hostname }},
+  client_name   => '{{ inventory_hostname }}',
   subscriptions => ['default', 'master']
 }
 
