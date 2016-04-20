@@ -53,6 +53,7 @@ sensu::rabbitmq_port: '5671'
 sensu::rabbitmq_vhost: '/'
 sensu::rabbitmq_user: "%{hiera('rabbitmq_username')}"
 sensu::rabbitmq_password: "%{hiera('rabbitmq_password')}"
+sensu::redis_host: '127.0.0.1'
 sensu::api: true
 sensu::api_bind: '127.0.0.1'
 sensu::api_user: "%{hiera('sensu_username')}"
