@@ -148,12 +148,30 @@ sensu::checks:
   check-uchiwa:
     command: "/usr/local/bin/check-uchiwa-health.rb -h uchiwa.monitoring.rdoproject.org -u rdo -p rdo -P 80"
     subscribers: 'master'
-  check-weirdo-jobs:
-    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^weirdo'"
+  check-weirdo-promote-master-jobs:
+    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^weirdo-master-promote'"
     subscribers: 'master'
-  check-quickstart-jobs:
-    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^tripleo-quickstart'"
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '240'
+  check-weirdo-promote-mitaka-jobs:
+    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^weirdo-mitaka-promote'"
     subscribers: 'master'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '240'
+  check-quickstart-promote-master-jobs:
+    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^tripleo-quickstart-promote-master'"
+    subscribers: 'master'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '240'
+  check-quickstart-promote-mitaka-jobs:
+    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^tripleo-quickstart-promote-mitaka'"
+    subscribers: 'master'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '240'
   check-delorean-newton-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py centos7-master current-passed-ci"
     subscribers: 'master'
