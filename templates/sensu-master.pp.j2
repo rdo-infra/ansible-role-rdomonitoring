@@ -4,7 +4,7 @@ include ::redis
 
 class { 'sensu':
   client_name   => '{{ inventory_hostname }}',
-  subscriptions => ['default', 'master']
+  subscriptions => [{% for subscription in monitoring_master_subscriptions %}'{{ subscription }}'{% if not loop.last %},{% endif %} {% endfor %}]
 }
 
 include ::uchiwa

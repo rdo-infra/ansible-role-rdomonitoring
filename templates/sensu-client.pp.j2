@@ -2,5 +2,5 @@ class { 'sensu':
   client_name   => '{{ inventory_hostname }}',
   server        => false,
   api           => false,
-  subscriptions => ['default']
+  subscriptions => [{% for subscription in monitoring_client_subscriptions %}'{{ subscription }}'{% if not loop.last %},{% endif %} {% endfor %}]
 }
