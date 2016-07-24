@@ -208,9 +208,21 @@ sensu::checks:
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
-  check-delorean-update-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master/current/build.log 21600"
+  check-delorean-update-centos-master-primary:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master/current/build.log 7200"
+    subscribers: 'dlrn-primary'
+  check-delorean-update-centos-master-secondary:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master/current/build.log 7200"
     subscribers: 'master'
-  check-delorean-update-backup:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master/current/build.log 86400"
+  check-delorean-update-centos-mitaka-primary:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-mitaka/current/build.log 21600"
+    subscribers: 'dlrn-primary'
+  check-delorean-update-centos-mitaka-secondary:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-mitaka/current/build.log 21600"
+    subscribers: 'master'
+  check-delorean-update-centos-liberty-primary:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-liberty/current/build.log 21600"
+    subscribers: 'dlrn-primary'
+  check-delorean-update-centos-liberty-secondary:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-liberty/current/build.log 21600"
     subscribers: 'master'
