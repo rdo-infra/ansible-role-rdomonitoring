@@ -75,10 +75,14 @@ if __name__ == '__main__':
     projects = []
     problem = False
     for line in versions:
-        source_repo = line['Source Repo']
-        source_sha = line['Source Sha']
-        project = source_repo.split('/')[-1]
-        status = line['Status']
+        try:
+            source_repo = line['Source Repo']
+            source_sha = line['Source Sha']
+            project = source_repo.split('/')[-1]
+            status = line['Status']
+        except KeyError:
+            error_message = "Could not successfully retrieve repository info"
+            return_exit('CRITICAL', error_message)
 
         if "SUCCESS" not in status:
             projects.append(project)
