@@ -83,6 +83,12 @@ sensu::handlers:
     filters:
       - filter_disabled_or_silenced
       - filter_check_retry_occurrences
+  cachet:
+    type: 'pipe'
+    command: "/etc/sensu/handlers/cachet.py"
+    filters:
+      - filter_disabled_or_silenced
+      - filter_check_retry_occurrences
 sensu::check_defaults:
   occurrences: '3'
   interval: '60'
@@ -148,99 +154,147 @@ sensu::checks:
   check-uchiwa:
     command: "/usr/local/bin/check-uchiwa-health.rb -h uchiwa.monitoring.rdoproject.org -u rdo -p rdo -P 80"
     subscribers: 'master'
-  check-weirdo-promote-master-jobs:
-    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^weirdo-master-promote'"
+  check-promote-master-jobs:
+    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^(weirdo-master-promote|tripleo-quickstart-promote-master)'"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
+      - 'cachet'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '240'
-  check-weirdo-promote-mitaka-jobs:
-    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^weirdo-mitaka-promote'"
+      component_id: 1
+  check-promote-mitaka-jobs:
+    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^(weirdo-mitaka-promote|tripleo-quickstart-promote-mitaka)'"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
+      - 'cachet'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '240'
-  check-quickstart-promote-master-jobs:
-    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^tripleo-quickstart-promote-master'"
+      component_id: 2
+  check-promote-liberty-jobs:
+    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^tripleo-quickstart-promote-liberty'"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
+      - 'cachet'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '240'
-  check-quickstart-promote-mitaka-jobs:
-    command: "/usr/local/bin/check-jenkins-job-status.rb -u https://ci.centos.org -j '^tripleo-quickstart-promote-mitaka'"
-    subscribers: 'master'
-    custom:
-      broadcast: '#rdo-dev'
-      retry_occurrences: '240'
+      component_id: 3
   check-delorean-newton-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py centos7-master current-passed-ci"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-newton-current:
     command: "/usr/local/bin/check-delorean-builds.py centos7-master current"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
+      - 'cachet'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
+      component_id: 4
   check-delorean-newton-consistent:
     command: "/usr/local/bin/check-delorean-builds.py centos7-master consistent"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-mitaka-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current-passed-ci"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-mitaka-current:
     command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
+      - 'cachet'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
+      component_id: 5
   check-delorean-mitaka-consistent:
     command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka consistent"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-liberty-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py centos7-liberty current-passed-ci"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-liberty-current:
     command: "/usr/local/bin/check-delorean-builds.py centos7-liberty current"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
+      - 'cachet'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
+      component_id: 6
   check-delorean-liberty-consistent:
     command: "/usr/local/bin/check-delorean-builds.py centos7-liberty consistent"
     subscribers: 'master'
+    handlers:
+      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-update-centos-master-primary:
     command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master/current/build.log 7200"
     subscribers: 'dlrn-primary'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '60'
   check-delorean-update-centos-master-secondary:
     command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master/current/build.log 7200"
     subscribers: 'master'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '60'
   check-delorean-update-centos-mitaka-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-mitaka/current/build.log 21600"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-mitaka/current/build.log 43200"
     subscribers: 'dlrn-primary'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '60'
   check-delorean-update-centos-mitaka-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-mitaka/current/build.log 21600"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-mitaka/current/build.log 43200"
     subscribers: 'master'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '60'
   check-delorean-update-centos-liberty-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-liberty/current/build.log 21600"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-liberty/current/build.log 86400"
     subscribers: 'dlrn-primary'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '60'
   check-delorean-update-centos-liberty-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-liberty/current/build.log 21600"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-liberty/current/build.log 86400"
     subscribers: 'master'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '60'

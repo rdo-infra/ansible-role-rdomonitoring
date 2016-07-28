@@ -81,6 +81,7 @@ monitoring_custom_sensu_plugins:
 
 monitoring_custom_sensu_handlers:
   - errbot.py
+  - cachet.py
 
 monitoring_custom_sensu_extensions:
   - filter_disabled_or_silenced.rb
