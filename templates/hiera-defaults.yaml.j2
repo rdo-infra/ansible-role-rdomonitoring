@@ -210,6 +210,32 @@ sensu::checks:
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
+  check-delorean-newton-head-current-passed-ci:
+    command: "/usr/local/bin/check-delorean-builds.py centos7-master-head current-passed-ci"
+    subscribers: 'master'
+    handlers:
+      - 'errbot'
+    custom:
+      broadcast: '#rdo'
+      retry_occurrences: '120'
+  check-delorean-newton-head-current:
+    command: "/usr/local/bin/check-delorean-builds.py centos7-master-head current"
+    subscribers: 'master'
+    handlers:
+      - 'errbot'
+      - 'cachet'
+    custom:
+      broadcast: '#rdo'
+      retry_occurrences: '120'
+      component_id: 4
+  check-delorean-newton-head-consistent:
+    command: "/usr/local/bin/check-delorean-builds.py centos7-master-head consistent"
+    subscribers: 'master'
+    handlers:
+      - 'errbot'
+    custom:
+      broadcast: '#rdo'
+      retry_occurrences: '120'
   check-delorean-mitaka-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current-passed-ci"
     subscribers: 'master'
@@ -270,6 +296,18 @@ sensu::checks:
       retry_occurrences: '60'
   check-delorean-update-centos-master-secondary:
     command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master/current/build.log 7200"
+    subscribers: 'master'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '60'
+  check-delorean-update-centos-master-head-primary:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master-head/current/build.log 7200"
+    subscribers: 'dlrn-primary'
+    custom:
+      broadcast: '#rdo-dev'
+      retry_occurrences: '60'
+  check-delorean-update-centos-master-head-secondary:
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master-head/current/build.log 7200"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
