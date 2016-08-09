@@ -289,37 +289,37 @@ sensu::checks:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-update-centos-master-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master/current/build.log 7200"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master/current/build.log 14400"
     subscribers: 'dlrn-primary'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-master-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master/current/build.log 7200"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master/current/build.log 14400"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-master-head-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master-head/current/build.log 7200"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master-head/current/build.log 14400"
     subscribers: 'dlrn-primary'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-master-head-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master-head/current/build.log 7200"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master-head/current/build.log 14400"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-mitaka-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-mitaka/current/build.log 43200"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-mitaka/current/build.log 86400"
     subscribers: 'dlrn-primary'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-mitaka-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-mitaka/current/build.log 43200"
+    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-mitaka/current/build.log 86400"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
