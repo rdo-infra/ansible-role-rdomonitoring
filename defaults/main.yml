@@ -64,6 +64,8 @@ monitoring_sensu_plugins:
     creates: "/usr/local/bin/check-dns.rb"
   http:
     creates: "/usr/local/bin/check-http.rb"
+  https-cert:
+    creates: "/usr/local/bin/check-https-cert.rb"
   uptime-checks:
     creates: "/usr/local/bin/metrics-uptime.rb"
   jenkins:
