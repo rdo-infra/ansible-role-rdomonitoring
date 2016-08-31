@@ -5,7 +5,7 @@ import requests
 from cStringIO import StringIO
 
 # Delorean build statuses
-BUILD_STATUSES = ['SUCCESS', 'FAILED']
+BUILD_STATUSES = ['SUCCESS', 'RETRY', 'FAILED']
 
 # URL to Delorean build statuses in csv format
 DEFAULT_RELEASE = "centos7"
@@ -84,7 +84,7 @@ if __name__ == '__main__':
             error_message = "Could not successfully retrieve repository info"
             return_exit('CRITICAL', error_message)
 
-        if "SUCCESS" not in status:
+        if ("SUCCESS" not in status) and ("RETRY" not in status):
             projects.append(project)
             problem = True
 
