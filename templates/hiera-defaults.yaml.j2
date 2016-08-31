@@ -336,3 +336,11 @@ sensu::checks:
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
+{% for i in ['blogs', 'www', 'dashboards'] %}
+  check-http-{{ i }}-rdoproject:
+    command: "/usr/local/bin/check-http -u http://{{ i }}.rdoproject.org/"
+  check-https-{{ i }}-rdoproject:
+    command: "/usr/local/bin/check-http -u https://{{ i }}.rdoproject.org/"
+  check-https-cert-{{ i }}-rdoproject:
+    command: "/usr/local/bin/check-https-cert -c 3 -w 6 -u https://{{ i }}.rdoproject.org/"
+{% endfor %}
