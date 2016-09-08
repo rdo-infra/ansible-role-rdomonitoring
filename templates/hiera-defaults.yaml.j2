@@ -205,16 +205,12 @@ sensu::checks:
   check-delorean-newton-consistent:
     command: "/usr/local/bin/check-delorean-builds.py centos7-master consistent"
     subscribers: 'master'
-    handlers:
-      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-newton-head-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py centos7-master-head current-passed-ci"
     subscribers: 'master'
-    handlers:
-      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
@@ -231,16 +227,12 @@ sensu::checks:
   check-delorean-newton-head-consistent:
     command: "/usr/local/bin/check-delorean-builds.py centos7-master-head consistent"
     subscribers: 'master'
-    handlers:
-      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-mitaka-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current-passed-ci"
     subscribers: 'master'
-    handlers:
-      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
@@ -257,16 +249,12 @@ sensu::checks:
   check-delorean-mitaka-consistent:
     command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka consistent"
     subscribers: 'master'
-    handlers:
-      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-liberty-current-passed-ci:
     command: "/usr/local/bin/check-delorean-builds.py centos7-liberty current-passed-ci"
     subscribers: 'master'
-    handlers:
-      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
@@ -283,8 +271,6 @@ sensu::checks:
   check-delorean-liberty-consistent:
     command: "/usr/local/bin/check-delorean-builds.py centos7-liberty consistent"
     subscribers: 'master'
-    handlers:
-      - 'errbot'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
