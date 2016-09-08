@@ -322,3 +322,11 @@ sensu::checks:
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
+{% for key, value in monitoring_external_ssl_endpoints.iteritems() %}
+  check-{{ key }}-https:
+    command: "/usr/local/bin/check-http.rb -u {{ value }}"
+    subscribers: 'master'
+  check-{{ key }}-https-certificate:
+    command: "/usr/local/bin/check-https-cert.rb -u {{ value }} -c 7 -w 14"
+    subscribers: 'master'
+{% endfor %}
