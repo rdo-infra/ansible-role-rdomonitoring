@@ -97,7 +97,7 @@ monitoring_client_subscriptions:
 monitoring_external_ssl_endpoints:
   www-rdoproject-org: https://www.rdoproject.org/
   blogs-rdo-project-org: https://blogs.rdoproject.org/
-  dashboards-rdo-project-org: https://dashboards.rdoproject.org/
+  dashboards-rdo-project-org: https://dashboards.rdoproject.org/rdo-dev
   review-rdo-project-org: https://review.rdoproject.org/r/
   trunk-rdo-project-org: https://trunk.rdoproject.org/
   images-rdo-project-org: https://images.rdoproject.org/
