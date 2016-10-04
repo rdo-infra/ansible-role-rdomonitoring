@@ -1,3 +1,5 @@
-# UUID                                  	Group Name
-#
-533da0204f802aeafd96482c0d89bb01d1593855	rdo-infra/ansible-role-rdomonitoring-ptl
+# UUID          Group Name
+False 	Non-Interactive Users
+99d5b9ab97036f82a2eccf49817d8c4e4743154a       	rdo-infra/ansible-role-rdomonitoring-core
+533da0204f802aeafd96482c0d89bb01d1593855        	rdo-infra/ansible-role-rdomonitoring-ptl
+global:Registered-Users		Registered Users
