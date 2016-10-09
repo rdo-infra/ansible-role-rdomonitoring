@@ -28,14 +28,12 @@
     mode: "0644"
     force: "yes"
 
-- name: Enable extra repositories
+- name: Enable EPEL
   package:
-    name: "{{ item }}"
+    name: "epel-release"
     state: "present"
-  with_items: "{{ monitoring_extra_repositories }}"
   retries: "3"
   delay: "20"
-  when: monitoring_extra_repositories is defined
 
 - name: Ensure yum-plugin-priorities is used
   package:
