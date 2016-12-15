@@ -214,24 +214,6 @@ sensu::checks:
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
-  check-delorean-liberty-current:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-liberty current"
-    subscribers: 'master'
-    custom:
-      broadcast: '#rdo'
-      retry_occurrences: '120'
-  check-delorean-liberty-consistent:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-liberty consistent"
-    subscribers: 'master'
-    custom:
-      broadcast: '#rdo'
-      retry_occurrences: '120'
-  check-delorean-liberty-current-passed-ci:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-liberty current-passed-ci"
-    subscribers: 'master'
-    custom:
-      broadcast: '#rdo'
-      retry_occurrences: '120'
   check-delorean-update-centos-master-primary:
     command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master/current/build.log 14400"
     subscribers: 'dlrn-primary'
@@ -276,18 +258,6 @@ sensu::checks:
       retry_occurrences: '60'
   check-delorean-update-centos-mitaka-secondary:
     command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-mitaka/current/build.log 172800"
-    subscribers: 'master'
-    custom:
-      broadcast: '#rdo-dev'
-      retry_occurrences: '60'
-  check-delorean-update-centos-liberty-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-liberty/current/build.log 172800"
-    subscribers: 'dlrn-primary'
-    custom:
-      broadcast: '#rdo-dev'
-      retry_occurrences: '60'
-  check-delorean-update-centos-liberty-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-liberty/current/build.log 172800"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
