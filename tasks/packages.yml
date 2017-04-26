@@ -14,26 +14,20 @@
 #   under the License.
 #
 
-- name: Setup delorean repository
-  get_url:
-    url: "{{ monitoring_delorean_url }}"
-    dest: "/etc/yum.repos.d/delorean.repo"
-    mode: "0644"
-    force: "yes"
-
-- name: Setup delorean-deps repository
-  get_url:
-    url: "{{ monitoring_delorean_deps_url }}"
-    dest: "/etc/yum.repos.d/delorean-deps.repo"
-    mode: "0644"
-    force: "yes"
-
-- name: Enable EPEL
+- name: Setup RDO repository
   package:
-    name: "epel-release"
-    state: "present"
-  retries: "3"
-  delay: "20"
+    name: "centos-release-openstack-ocata"
+
+# https://sensuapp.org/docs/latest/platforms/sensu-on-rhel-centos.html
+- name: Setup Sensu repository
+  copy:
+    content: |
+      [sensu]
+      name=sensu
+      baseurl=https://sensu.global.ssl.fastly.net/yum/$releasever/$basearch/
+      gpgcheck=0
+      enabled=1
+    dest: /etc/yum.repos.d/sensu.repo
 
 - name: Ensure yum-plugin-priorities is used
   package:
@@ -49,3 +43,19 @@
   with_items: "{{ monitoring_base_packages }}"
   retries: "3"
   delay: "20"
+
+# TODO: Figure out why using --modulepath yields provider errors
+# Ex: Error: Could not find a suitable provider for sensu_rabbitmq_config
+- name: Symlink puppet-{stdlib,sensu,uchiwa}
+  file:
+    src: "/usr/share/openstack-puppet/modules/{item}"
+    dest: "/etc/puppet/modules/"
+    owner: root
+    group: root
+    state: link
+
+# https://github.com/sensu-plugins/sensu-plugins-memory-checks/issues/33
+- name: Install vmstat gem
+  gem:
+    name: "vmstat"
+    state: "present"

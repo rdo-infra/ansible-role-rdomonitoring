@@ -14,12 +14,6 @@
 #   under the License.
 #
 
-- name: Ensure /usr/local/bin is in Sensu PATH
-  lineinfile:
-    dest: "/etc/default/sensu"
-    regexp: "^PATH=.*"
-    line: "PATH=$PATH:/usr/local/bin"
-
 - name: Install required sensu plugins
   command: sensu-install -P {{ item.key }}
   args:
@@ -29,7 +23,7 @@
 - name: Setup custom sensu plugins
   copy:
     src: "{{ item }}"
-    dest: "/usr/local/bin/{{item}}"
+    dest: "/opt/sensu/embedded/bin/{{ item }}"
     mode: "0555"
     owner: "sensu"
     group: "sensu"
@@ -38,7 +32,7 @@
 - name: Setup custom sensu handlers
   copy:
     src: "{{ item }}"
-    dest: "/etc/sensu/handlers/{{ item }}"
+    dest: "/etc/sensu/plugins/{{ item }}"
     mode: "0555"
     owner: "sensu"
     group: "sensu"

@@ -26,6 +26,7 @@ rabbitmq::tcp_keepalive: true
 rabbitmq::admin_enable: false
 
 # Uchiwa
+# Note: Uchiwa is inside the Sensu repositories now.
 uchiwa::install_repo: false
 uchiwa::sensu_api_endpoints:
   - name: 'rdo-monitoring'
@@ -41,8 +42,12 @@ uchiwa::sensu_api_endpoints:
 
 # Sensu core config
 sensu::server: true
-sensu::install_repo: true
+# Note: Repository location has changed and puppet-sensu hasn't released
+# a new version since Nov 2016 which means it doesn't have the right URL
+sensu::install_repo: false
+sensu::manage_repo: false
 sensu::manage_services: true
+sensu::use_embedded_ruby: true
 sensu::manage_user: true
 sensu::rabbitmq_ssl: true
 sensu::rabbitmq_ssl_cert_chain: '/etc/ssl/sensu/client/cert.pem'
@@ -79,7 +84,7 @@ sensu::client_custom:
 sensu::handlers:
   errbot:
     type: 'pipe'
-    command: "/etc/sensu/handlers/errbot.py --endpoint http://%{hiera('bot_host')}/sensu_event"
+    command: "/etc/sensu/plugins/errbot.py --endpoint http://%{hiera('bot_host')}/sensu_event"
     filters:
       - filter_disabled_or_silenced
       - filter_check_retry_occurrences
@@ -97,176 +102,176 @@ sensu::check_defaults:
 sensu::checks:
   # Default checks
   check-cpu:
-    command: '/usr/local/bin/check-cpu.rb'
+    command: '/opt/sensu/embedded/bin/check-cpu.rb'
     occurrences: '10'
   check-load:
-    command: '/usr/local/bin/check-load.rb'
+    command: '/opt/sensu/embedded/bin/check-load.rb'
     occurrences: '10'
   check-disk-usage:
-    command: '/usr/local/bin/check-disk-usage.rb'
+    command: '/opt/sensu/embedded/bin/check-disk-usage.rb'
   check-ram:
-    command: '/usr/local/bin/check-ram.rb'
+    command: '/opt/sensu/embedded/bin/check-ram.rb'
   check-fstab:
-    command: '/usr/local/bin/check-fstab-mounts.rb'
+    command: '/opt/sensu/embedded/bin/check-fstab-mounts.rb'
   check-dns:
-    command: '/usr/local/bin/check-dns.rb -d rdoproject.org'
+    command: '/opt/sensu/embedded/bin/check-dns.rb -d rdoproject.org'
   # Default metrics
   metric-interfaces:
-    command: '/usr/local/bin/metrics-interface.rb'
+    command: '/opt/sensu/embedded/bin/metrics-interface.rb'
     type: 'metric'
     handlers: 'none'
   metric-network:
-    command: '/usr/local/bin/metrics-net.rb'
+    command: '/opt/sensu/embedded/bin/metrics-net.rb'
     type: 'metric'
     handlers: 'none'
   metric-network-throughput:
-    command: '/usr/local/bin/metrics-netif.rb'
+    command: '/opt/sensu/embedded/bin/metrics-netif.rb'
     type: 'metric'
     handlers: 'none'
   metric-cpu:
-    command: '/usr/local/bin/metrics-cpu.rb'
+    command: '/opt/sensu/embedded/bin/metrics-cpu.rb'
     type: 'metric'
     handlers: 'none'
   # Master checks
   check-sensu-api:
-    command: '/usr/local/bin/check-process.rb -p "sensu-api" -C 1'
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "sensu-api" -C 1'
     subscribers: 'master'
   check-rabbitmq:
-    command: '/usr/local/bin/check-process.rb -p "rabbitmq" -C 1'
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "rabbitmq" -C 1'
     subscribers: 'master'
   check-sensu-server:
-    command: '/usr/local/bin/check-process.rb -p "sensu-server" -C 1'
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "sensu-server" -C 1'
     subscribers: 'master'
   check-nginx:
-    command: '/usr/local/bin/check-process.rb -p "nginx" -C 1'
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "nginx" -C 1'
     subscribers: 'master'
   check-domain-registration:
-    command: '/usr/local/bin/check-whois-domain-expiration.rb -d rdoproject.org -c 60'
+    command: '/opt/sensu/embedded/bin/check-whois-domain-expiration.rb -d rdoproject.org -c 60'
     subscribers: 'master'
     interval: '14400'
     ttl: '43200'
   check-uchiwa:
-    command: "/usr/local/bin/check-uchiwa-health.rb -h uchiwa.monitoring.rdoproject.org -u rdo -p rdo -P 80"
+    command: "/opt/sensu/embedded/bin/check-uchiwa-health.rb -h uchiwa.monitoring.rdoproject.org -u rdo -p rdo -P 80"
     subscribers: 'master'
   check-delorean-master-current:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-master current"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-master current"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-master-consistent:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-master consistent"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-master consistent"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-master-current-passed-ci:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-master current-passed-ci"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-master current-passed-ci"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-master-head-current:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-master-head current"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-master-head current"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-master-head-consistent:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-master-head consistent"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-master-head consistent"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-newton-current:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-newton current"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-newton current"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-newton-consistent:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-newton consistent"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-newton consistent"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-newton-current-passed-ci:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-newton current-passed-ci"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-newton current-passed-ci"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-mitaka-current:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-mitaka current"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-mitaka-consistent:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka consistent"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-mitaka consistent"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-mitaka-current-passed-ci:
-    command: "/usr/local/bin/check-delorean-builds.py centos7-mitaka current-passed-ci"
+    command: "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-mitaka current-passed-ci"
     subscribers: 'master'
     custom:
       broadcast: '#rdo'
       retry_occurrences: '120'
   check-delorean-update-centos-master-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master/current/build.log 14400"
+    command: "/opt/sensu/embedded/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master/current/build.log 14400"
     subscribers: 'dlrn-primary'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-master-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master/current/build.log 14400"
+    command: "/opt/sensu/embedded/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master/current/build.log 14400"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-master-head-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master-head/current/build.log 86400"
+    command: "/opt/sensu/embedded/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-master-head/current/build.log 86400"
     subscribers: 'dlrn-primary'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-master-head-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master-head/current/build.log 86400"
+    command: "/opt/sensu/embedded/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-master-head/current/build.log 86400"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-newton-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-newton/current/build.log 86400"
+    command: "/opt/sensu/embedded/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-newton/current/build.log 86400"
     subscribers: 'dlrn-primary'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-newton-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-newton/current/build.log 86400"
+    command: "/opt/sensu/embedded/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-newton/current/build.log 86400"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-mitaka-primary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-mitaka/current/build.log 172800"
+    command: "/opt/sensu/embedded/bin/check-http-file-age.sh http://trunk-primary.rdoproject.org/centos7-mitaka/current/build.log 172800"
     subscribers: 'dlrn-primary'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
   check-delorean-update-centos-mitaka-secondary:
-    command: "/usr/local/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-mitaka/current/build.log 172800"
+    command: "/opt/sensu/embedded/bin/check-http-file-age.sh http://trunk-backup.rdoproject.org/centos7-mitaka/current/build.log 172800"
     subscribers: 'master'
     custom:
       broadcast: '#rdo-dev'
       retry_occurrences: '60'
 {% for key, value in monitoring_external_ssl_endpoints.iteritems() %}
   check-{{ key }}-https:
-    command: "/usr/local/bin/check-http.rb -u {{ value }}"
+    command: "/opt/sensu/embedded/bin/check-http.rb -u {{ value }}"
     subscribers: 'master'
   check-{{ key }}-https-certificate:
-    command: "/usr/local/bin/check-https-cert.rb -u {{ value }} -c 7 -w 14"
+    command: "/opt/sensu/embedded/bin/check-https-cert.rb -u {{ value }} -c 7 -w 14"
     subscribers: 'master'
 {% endfor %}

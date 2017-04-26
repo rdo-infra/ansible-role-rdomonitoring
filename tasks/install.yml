@@ -34,22 +34,22 @@
   template:
     src: "templates/sensu-master.pp.j2"
     dest: "/etc/puppet/manifests/sensu-master.pp"
-  when: inventory_hostname in groups.master
+  when: monitoring_type == 'master'
 
 - name: Create client manifest
   template:
     src: "templates/sensu-client.pp.j2"
     dest: "/etc/puppet/manifests/sensu-client.pp"
-  when: inventory_hostname in groups.client
+  when: monitoring_type == 'client'
 
 - name: Run puppet manifest for sensu server
   command: |
     puppet apply /etc/puppet/manifests/sensu-server.pp \
       --modulepath={{ monitoring_puppet_module_path }}
-  when: inventory_hostname in groups.master
+  when: monitoring_type == 'master'
 
 - name: Run puppet manifest for sensu client
   command: |
     puppet apply /etc/puppet/manifests/sensu-client.pp \
       --modulepath={{ monitoring_puppet_module_path }}
-  when: inventory_hostname in groups.client
+  when: monitoring_type == 'client'
