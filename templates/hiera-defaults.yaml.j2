@@ -26,6 +26,7 @@ rabbitmq::tcp_keepalive: true
 rabbitmq::admin_enable: false
 
 # Uchiwa
+# Note: Uchiwa is inside the Sensu repositories now.
 uchiwa::install_repo: false
 uchiwa::sensu_api_endpoints:
   - name: 'rdo-monitoring'
@@ -41,8 +42,12 @@ uchiwa::sensu_api_endpoints:
 
 # Sensu core config
 sensu::server: true
-sensu::install_repo: true
+# Note: Repository location has changed and puppet-sensu hasn't released
+# a new version since Nov 2016 which means it doesn't have the right URL
+sensu::install_repo: false
+sensu::manage_repo: false
 sensu::manage_services: true
+sensu::use_embedded_ruby: true
 sensu::manage_user: true
 sensu::rabbitmq_ssl: true
 sensu::rabbitmq_ssl_cert_chain: '/etc/ssl/sensu/client/cert.pem'

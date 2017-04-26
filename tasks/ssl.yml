@@ -29,14 +29,14 @@
     dest: "/usr/local/bin"
     copy: "no"
     creates: "/usr/local/bin/sensu_ssl_tool"
-  when: inventory_hostname in groups.master
+  when: monitoring_type == 'master'
 
 - name: Generate keys and certificates
   command: ./ssl_certs.sh generate
   args:
     chdir: "/usr/local/bin/sensu_ssl_tool"
     creates: "/usr/local/bin/sensu_ssl_tool/server/cert.pem"
-  when: inventory_hostname in groups.master
+  when: monitoring_type == 'master'
 
 # copy with remote_src doesn't seem to work for directories
 # https://github.com/ansible/ansible-modules-core/issues/2875
@@ -45,4 +45,4 @@
   with_items:
     - "/usr/local/bin/sensu_ssl_tool/server"
     - "/usr/local/bin/sensu_ssl_tool/client"
-  when: inventory_hostname in groups.master
+  when: monitoring_type == 'master'
