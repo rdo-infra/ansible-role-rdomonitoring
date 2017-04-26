@@ -19,4 +19,4 @@
 - include: install.yml
 - include: checks.yml
 - include: master.yml
-  when: inventory_hostname in groups.master
+  when: monitoring_type == 'master'

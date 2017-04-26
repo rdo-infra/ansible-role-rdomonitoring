@@ -14,11 +14,14 @@
 #   under the License.
 #
 
+monitoring_type: client
+
 monitoring_master_host: 'master.monitoring.rdoproject.org'
 monitoring_rabbitmq_host: "{{ monitoring_master_host }}"
 monitoring_api_host: 'api.monitoring.rdoproject.org'
 monitoring_uchiwa_host: 'uchiwa.monitoring.rdoproject.org'
 monitoring_bot_host: 'bot.monitoring.rdoproject.org'
+monitoring_rabbitmq_erlang_cookie: 'cookie'
 monitoring_rabbitmq_username: 'rabbitmq_username'
 monitoring_rabbitmq_password: 'rabbitmq_password'
 monitoring_sensu_username: 'sensu_username'
@@ -29,21 +32,20 @@ monitoring_uchiwa_users: |
       password: 'rdo'
       readonly: 'true'
 
-monitoring_delorean_url: "http://trunk.rdoproject.org/centos7-mitaka/current-passed-ci/delorean.repo"
-monitoring_delorean_deps_url: "http://trunk.rdoproject.org/centos7-mitaka/delorean-deps.repo"
-
 monitoring_base_packages:
   - "@Development tools"
   - python-setuptools
   - python-requests
   - python-pip
   - python-devel
+  - rubygems
   - ruby-devel
   - libffi-devel
   - libxml2-devel
   - openssl-devel
   - puppet
-  - openstack-puppet-modules
+  - puppet-sensu
+  - puppet-uchiwa
 
 monitoring_puppet_module_path: "/usr/share/openstack-puppet/modules"
 
